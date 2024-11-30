@@ -18,7 +18,7 @@ const login = async (req: Request, res: Response) => {
 
     const users = redisUser ? JSON.parse(redisUser) : [];
 
-    const user = users.find((u) => u.email === body.email);
+    let user = users.find((u) => u.email === body.email);
     if (!user) {
       return errorResponse(
         res,
@@ -38,9 +38,10 @@ const login = async (req: Request, res: Response) => {
       );
     }
 
+    user = { ...user, password: undefined };
     const createToken = generateToken(user);
 
-    return successResponse(res, { token: createToken });
+    return successResponse(res, { user: user, token: createToken });
   } catch (error) {
     return errorResponse(res, 'Something Went Wrong', error);
   }
