@@ -4,6 +4,7 @@
  */
 
 import express from 'express';
+import cors from 'cors';
 import * as path from 'path';
 
 const app = express();
@@ -14,6 +15,7 @@ import SeedRoutes from './routes/seed';
 import bodyParser from 'body-parser';
 import { authMiddleware } from './middleware/authMiddleware';
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 

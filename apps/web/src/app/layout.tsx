@@ -1,3 +1,5 @@
+// import { getSession } from '../utils/auth';
+// import { SessionProvider } from 'next-auth/react';
 import './global.css';
 
 export const metadata = {
