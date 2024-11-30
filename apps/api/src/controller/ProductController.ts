@@ -57,6 +57,7 @@ const storeProduct = async (req: Request, res: Response) => {
       price,
       description,
       createdAt: new Date(),
+      updatedAt: new Date(),
     };
 
     products.push(newProduct);

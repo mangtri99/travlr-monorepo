@@ -11,7 +11,7 @@ const app = express();
 import ProductRoutes from './routes/product';
 import AuthRoutes from './routes/auth';
 import bodyParser from 'body-parser';
-import { authMiddleware } from './middleware/authMiddleware';
+// import { authMiddleware } from './middleware/authMiddleware';
 
 app.use(bodyParser.json());
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
@@ -20,8 +20,8 @@ app.get('/api', (req, res) => {
   res.send({ message: 'Welcome to api!' });
 });
 
-app.use('/api/auth', [], AuthRoutes);
-app.use('/api/products', [authMiddleware], ProductRoutes);
+app.use('/api/auth', AuthRoutes);
+app.use('/api/products', [], ProductRoutes);
 
 const port = process.env.PORT || 3333;
 const server = app.listen(port, () => {
