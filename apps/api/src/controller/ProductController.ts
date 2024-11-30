@@ -8,10 +8,33 @@ import { REDIS_PRODUCTS_KEY } from '../config/redis';
 const redis = new Redis();
 
 const allProducts = async (req: Request, res: Response) => {
+  // get query params
+  const { perPage = 10, page = 1, search } = req.query;
+
   // get cached products
   const cachedProducts = await redis.get(REDIS_PRODUCTS_KEY);
   if (cachedProducts) {
-    return successResponse(res, JSON.parse(cachedProducts));
+    let getProducts = JSON.parse(cachedProducts);
+    // if search query is provided
+    if (search) {
+      getProducts = getProducts.filter((product) =>
+        product.name.toLowerCase().includes(String(search).toLowerCase())
+      );
+    }
+
+    // calculate pagination
+    const start = page ? (Number(page) - 1) * Number(perPage) : 0;
+    const end = start + Number(perPage);
+    const products = getProducts.slice(start, end);
+
+    return successResponse(res, {
+      products,
+      paginations: {
+        page: Number(page),
+        perPage: Number(perPage),
+        total: getProducts.length,
+      },
+    });
   } else {
     // return empty array if no products in cache
     return successResponse(res, []);

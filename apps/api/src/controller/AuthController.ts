@@ -5,7 +5,7 @@ import { loginSchema, registerSchema } from '../schema/auth';
 import { REDIS_USER_KEY } from '../config/redis';
 import bcryptjs from 'bcryptjs';
 import Redis from 'ioredis';
-import { generateToken, verifyToken } from '../utils/jwt';
+import { generateToken } from '../utils/jwt';
 
 const redis = new Redis();
 
@@ -82,11 +82,9 @@ const register = async (req: Request, res: Response) => {
 
 const user = async (req: Request, res: Response) => {
   try {
-    // const user = req.user;
-    const authHeader = req.headers.authorization;
-    const token = authHeader?.split(' ')[1];
-
-    const user = verifyToken(token);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    const user = req.user;
 
     return successResponse(res, user);
   } catch (error) {

@@ -10,6 +10,7 @@ const app = express();
 
 import ProductRoutes from './routes/product';
 import AuthRoutes from './routes/auth';
+import SeedRoutes from './routes/seed';
 import bodyParser from 'body-parser';
 import { authMiddleware } from './middleware/authMiddleware';
 
@@ -22,6 +23,8 @@ app.get('/api', (req, res) => {
 
 app.use('/api/auth', AuthRoutes);
 app.use('/api/products', [authMiddleware], ProductRoutes);
+
+app.use('/run/seeder', SeedRoutes);
 
 const port = process.env.EXPRESS_PORT || 3333;
 const server = app.listen(port, () => {

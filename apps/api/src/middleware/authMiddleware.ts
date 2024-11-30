@@ -11,16 +11,12 @@ export const authMiddleware = (
   const authHeader = req.headers.authorization;
   const token = authHeader?.split(' ')[1];
 
-  console.log('token', token);
   if (!token) {
     return errorResponse(res, 'Unauthorized', 401);
   }
 
   try {
     const user = verifyToken(token);
-
-    console.log('user', user);
-
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     req.user = user;
