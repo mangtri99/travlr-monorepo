@@ -3,7 +3,7 @@ import bcryptjs from 'bcryptjs';
 import { REDIS_USER_KEY } from '../config/redis';
 
 const redis = new Redis();
-const userSeeder = async (count = 1, isReset = false) => {
+const userSeeder = async (count = 1) => {
   // generate users
   const users = [];
   for (let i = 0; i < count; i++) {
@@ -20,17 +20,13 @@ const userSeeder = async (count = 1, isReset = false) => {
     users.push(user);
   }
 
-  if (isReset) {
+  const cachedUsers = await redis.get(REDIS_USER_KEY);
+  if (!cachedUsers) {
     await redis.set(REDIS_USER_KEY, JSON.stringify(users));
   } else {
-    const cachedUsers = await redis.get(REDIS_USER_KEY);
-    if (!cachedUsers) {
-      await redis.set(REDIS_USER_KEY, JSON.stringify(users));
-    } else {
-      const parsedUsers = JSON.parse(cachedUsers);
-      const newUsers = [...parsedUsers, ...users];
-      await redis.set(REDIS_USER_KEY, JSON.stringify(newUsers));
-    }
+    const parsedUsers = JSON.parse(cachedUsers);
+    const newUsers = [...parsedUsers, ...users];
+    await redis.set(REDIS_USER_KEY, JSON.stringify(newUsers));
   }
 
   return true;

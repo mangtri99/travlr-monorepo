@@ -11,9 +11,9 @@ const productSeed = async (req: Request, res: Response) => {
 };
 
 const userSeed = async (req: Request, res: Response) => {
-  const { count, isReset } = req.query;
+  const { count } = req.query;
 
-  await userSeeder(Number(count), Boolean(isReset));
+  await userSeeder(Number(count));
 
   return res.json({ message: 'User seeded' });
 };
