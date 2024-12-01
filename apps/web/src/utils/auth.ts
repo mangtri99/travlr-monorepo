@@ -8,7 +8,7 @@ import type { NextAuthConfig, Session, User } from 'next-auth';
 import { AdapterUser } from 'next-auth/adapters';
 // import { CredentialsType, SocialCredentialsType } from "@/types/login";
 import { JWT } from 'next-auth/jwt';
-import { $http } from './http';
+import axios from 'axios';
 
 // declare module "next-auth" {
 //   interface User extends UserType {}
@@ -29,7 +29,7 @@ const authOptions = {
       name: 'Credentials',
       authorize: async (credentials) => {
         try {
-          const { data } = await $http('/auth/login', {
+          const { data } = await axios('/auth/login', {
             method: 'POST',
             data: credentials,
             headers: { 'Content-Type': 'application/json' },

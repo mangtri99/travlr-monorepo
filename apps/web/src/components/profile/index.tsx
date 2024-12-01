@@ -4,13 +4,14 @@
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, usePathname } from 'next/navigation';
-import { $http } from '../../utils/http';
+import { FetchApi } from '../../utils/api';
 
 export default function Profile() {
   const router = useRouter();
   const pathname = usePathname();
 
   const { data: session } = useSession();
+  const $http = FetchApi(session);
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -35,12 +36,7 @@ export default function Profile() {
     setLoadingProfile(true);
 
     try {
-      const response = await $http('/auth/user', {
-        headers: {
-          Authorization: 'Bearer ' + token,
-          Accept: 'application/json',
-        },
-      });
+      const response = await $http('/auth/user');
       console.log('response', response);
       setLoadingProfile(false);
     } catch (error) {

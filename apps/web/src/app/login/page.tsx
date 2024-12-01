@@ -1,83 +1,94 @@
 'use client';
 
-// library imports
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Input from '../../components/input';
+import Label from '../../components/label';
+import Button from '../../components/button';
+import { z } from 'zod';
+import { loginSchema } from '../../schema/authSchema';
+import { useForm } from 'react-hook-form';
 
 export default function SignIn() {
-  const searchParams = useSearchParams();
-  const googleLogin =
-    'Your google login url which will contain your client id and redirectURI';
+  const {
+    formState: { errors },
+    handleSubmit,
+    register,
+  } = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [authenticated, setAuthenticated] = useState(false);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    // console.log('auth secret', process.env.AUTH_SECRET);
-    // if (authenticated) {
-    //   // Redirect to previous page or home page
-    //   const next = searchParams.get('next') || '/';
-    //   window.location.href = next;
-    // }
-  }, [authenticated]);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  // 2. Define a submit handler.
+  async function onSubmit(values: z.infer<typeof loginSchema>) {
+    console.log(values);
     try {
-      const res = await fetch('/api/login', {
+      const response = await fetch('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(values),
       });
 
-      if (res.ok) {
-        setAuthenticated(true);
-      } else {
-        // handle error state here
-        setError('Invalid credentials');
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
       }
     } catch (error) {
-      // handle error state here
-      console.error('Error during sign-in', error);
-      setError('Internal server error');
+      console.error(error);
     }
-  };
+  }
+
+  function onError(errors: any) {
+    console.log(errors);
+  }
 
   return (
-    <div className="mx-auto w-[200px] h-full border-red-100">
-      <div>
-        <p className="flex justify-center w-full mt-3 mb-5 text-xl">Sign In</p>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Email:
-            <input
-              type="text"
-              className="form-input"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </label>
-          <label>
-            Password:
-            <input
-              className="form-input"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </label>
-          <button
-            className="px-4 py-2 mt-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
-            type="submit"
-          >
-            Sign In
-          </button>
-          {error && <p className="text-red-500">{error}</p>}
+    <div className="flex flex-col items-center justify-center flex-1 w-full h-screen">
+      <div className="w-full max-w-sm p-4 bg-white border rounded-md shadow-sm">
+        <h1 className="mb-4 text-xl font-bold text-center">Travlr Test</h1>
+        <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-4">
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                {...register('email')}
+                aria-invalid={errors.email ? 'true' : 'false'}
+                message={errors.email?.message}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                {...register('password')}
+                aria-invalid={errors.password ? 'true' : 'false'}
+                message={errors.password?.message}
+              />
+            </div>
+
+            <div className="flex items-center justify-end space-x-4">
+              <div className="text-sm text-gray-700">
+                Dont have account?{' '}
+                <Link
+                  className="text-blue-500 underline hover:no-underline"
+                  href="/register"
+                >
+                  Register here
+                </Link>
+              </div>
+              <Button type="submit">Login</Button>
+            </div>
+          </div>
         </form>
       </div>
     </div>
