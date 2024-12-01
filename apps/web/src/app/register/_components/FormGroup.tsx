@@ -63,7 +63,7 @@ export default function FormGroup() {
               Already have account?{' '}
               <Link
                 className="text-blue-500 underline hover:no-underline"
-                href="/register"
+                href="/login"
               >
                 Login here
               </Link>

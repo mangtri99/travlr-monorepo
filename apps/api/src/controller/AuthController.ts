@@ -89,7 +89,19 @@ const user = async (req: Request, res: Response) => {
 
     return successResponse(res, user);
   } catch (error) {
-    return errorResponse(res, 'Something Went Wrong', error);
+    return errorResponse(res, 'Something Went Wrong', error, 401);
+  }
+};
+
+const logout = async (req: Request, res: Response) => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    req.user = undefined;
+
+    return successResponse(res, undefined, 200, 'Logged out successfully');
+  } catch (error) {
+    return errorResponse(res, 'Something Went Wrong', error, 500);
   }
 };
 
@@ -105,4 +117,4 @@ const listUser = async (req: Request, res: Response) => {
   }
 };
 
-export default { login, register, user, listUser };
+export default { login, register, user, listUser, logout };

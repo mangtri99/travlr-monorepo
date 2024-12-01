@@ -12,7 +12,7 @@ export const authMiddleware = (
   const token = authHeader?.split(' ')[1];
 
   if (!token) {
-    return errorResponse(res, 'Unauthorized', 401);
+    return errorResponse(res, 'Unauthorized', undefined, 401);
   }
 
   try {
@@ -24,6 +24,6 @@ export const authMiddleware = (
     next();
   } catch (err) {
     console.log('err', err);
-    return errorResponse(res, 'Invalid Token', 401);
+    return errorResponse(res, 'Invalid Token', err, 401);
   }
 };

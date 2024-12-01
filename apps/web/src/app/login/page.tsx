@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '../../components/input';
@@ -9,8 +9,11 @@ import Button from '../../components/button';
 import { z } from 'zod';
 import { loginSchema } from '../../schema/authSchema';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 
 export default function SignIn() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const {
     formState: { errors },
     handleSubmit,
@@ -26,6 +29,7 @@ export default function SignIn() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     console.log(values);
+    setIsLoading(true);
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
@@ -38,8 +42,11 @@ export default function SignIn() {
       if (response.ok) {
         const data = await response.json();
         console.log(data);
+        setIsLoading(false);
+        router.push('/product');
       }
     } catch (error) {
+      setIsLoading(false);
       console.error(error);
     }
   }
@@ -86,7 +93,9 @@ export default function SignIn() {
                   Register here
                 </Link>
               </div>
-              <Button type="submit">Login</Button>
+              <Button type="submit" disabled={isLoading}>
+                Login
+              </Button>
             </div>
           </div>
         </form>

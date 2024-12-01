@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { Icon } from '@iconify/react';
 import Button from '../../components/button';
 import Menu from '../../components/sidebar/menu';
+import { signOut } from 'next-auth/react';
 
 export default function ProductLayout({
   children,
@@ -59,7 +60,17 @@ export default function ProductLayout({
           </div>
 
           <div className="flex items-center">
-            <Button type="button">Logout</Button>
+            <Button
+              type="button"
+              onClick={() => {
+                signOut({
+                  redirect: true,
+                  redirectTo: '/login',
+                });
+              }}
+            >
+              Logout
+            </Button>
           </div>
         </div>
         <div className="p-4">{children}</div>

@@ -30,11 +30,11 @@ const authOptions = {
       authorize: async (credentials) => {
         try {
           const { data } = await axios('/auth/login', {
+            baseURL: process.env.NEXT_PUBLIC_BASE_URL,
             method: 'POST',
             data: credentials,
             headers: { 'Content-Type': 'application/json' },
           });
-          console.log('data', data);
           return data.data || null;
         } catch (error) {
           console.error('Error during authentication', error);
@@ -43,9 +43,9 @@ const authOptions = {
       },
     }),
   ],
+
   callbacks: {
     async jwt({ token, session, user }) {
-      console.log('jwt', token, session, user);
       if (user) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
@@ -58,7 +58,6 @@ const authOptions = {
       return Promise.resolve(token);
     },
     async session({ session, token }) {
-      console.log('session', session, token);
       if (token) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error

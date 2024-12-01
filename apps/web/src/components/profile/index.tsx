@@ -27,7 +27,7 @@ export default function Profile() {
       getUserProfile(session.accessToken);
     } else {
       // Redirect to `/login` if no access token or no session
-      router.push('/auth/login?next=' + pathname);
+      router.push('/login?next=' + pathname);
     }
     console.log('session', session);
   }, []);
