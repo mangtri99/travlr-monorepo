@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { loginSchema } from '../../schema/authSchema';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import { toast, Toaster } from 'sonner';
 
 export default function SignIn() {
   const router = useRouter();
@@ -48,6 +49,7 @@ export default function SignIn() {
     } catch (error) {
       setIsLoading(false);
       console.error(error);
+      toast.error('An error occurred. Please try again.');
     }
   }
 
@@ -57,6 +59,7 @@ export default function SignIn() {
 
   return (
     <div className="flex flex-col items-center justify-center flex-1 w-full h-screen">
+      <Toaster position="bottom-right" richColors />
       <div className="w-full max-w-sm p-4 bg-white border rounded-md shadow-sm">
         <h1 className="mb-4 text-xl font-bold text-center">Travlr Test</h1>
         <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-4">
