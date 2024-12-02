@@ -5,6 +5,7 @@ import { PRODUCT_SERVICE } from '../../../config/url';
 import { useState } from 'react';
 import { productSchema, FormProductType } from '../../../schema/productSchema';
 import { useSession } from 'next-auth/react';
+import { toast } from 'sonner';
 
 export const useFormProduct = (
   defaultValues?: FormProductType,
@@ -64,13 +65,21 @@ export const useFormProduct = (
       if (response) {
         console.log(response.data);
         if (!isEdit) {
+          toast.success('Product created successfully');
           reset();
+        } else {
+          toast.success('Product updated successfully');
         }
       }
       setIsLoading(false);
     } catch (error) {
       setIsLoading(true);
       console.error(error);
+      toast.error('Failed to save product', {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        description: error?.data?.message || 'Something went wrong',
+      });
     }
   }
 

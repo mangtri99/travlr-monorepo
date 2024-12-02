@@ -4,6 +4,7 @@ import { Icon } from '@iconify/react';
 import Button from '../../components/button';
 import Menu from '../../components/sidebar/menu';
 import { signOut } from 'next-auth/react';
+import { Toaster } from 'sonner';
 
 export default function ProductLayout({
   children,
@@ -22,6 +23,7 @@ export default function ProductLayout({
 
   return (
     <div className="flex">
+      <Toaster position="bottom-right" richColors />
       <div
         ref={sidebarRef}
         className="fixed z-10 w-64 h-full transition-transform -translate-x-full bg-white border-r md:translate-x-0"
@@ -48,7 +50,7 @@ export default function ProductLayout({
       <div
         id="content"
         ref={contentRef}
-        className="flex-1 w-full ml-0 transition-transform md:ml-64 "
+        className="flex flex-col flex-1 w-full h-full ml-0 transition-transform md:ml-64"
       >
         <div className="flex items-center justify-between w-full px-3 py-4 bg-white border-b">
           <div className="flex items-center">
@@ -73,7 +75,7 @@ export default function ProductLayout({
             </Button>
           </div>
         </div>
-        <div className="p-4">{children}</div>
+        <div className="flex-1 h-full min-h-[80vh] p-4">{children}</div>
       </div>
     </div>
   );

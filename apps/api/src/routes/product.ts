@@ -21,5 +21,6 @@ router.put(
   productController.updateProduct
 );
 router.delete(PRODUCT_SERVICE_PATH.detail, productController.deleteProduct);
+router.get(PRODUCT_SERVICE_PATH.summary, productController.summaryProduct);
 
 export default router;

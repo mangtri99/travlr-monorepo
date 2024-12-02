@@ -159,10 +159,55 @@ const deleteProduct = async (req: Request, res: Response) => {
   }
 };
 
+const summaryProduct = async (req: Request, res: Response) => {
+  // get cached products
+  const cachedProducts = await redis.get(REDIS_PRODUCTS_KEY);
+  if (cachedProducts) {
+    const products = JSON.parse(cachedProducts);
+
+    // generate total product by status
+    const totalProductByStatus = products.reduce((acc, product) => {
+      if (!acc[product.status]) {
+        acc[product.status] = 1;
+      } else {
+        acc[product.status] += 1;
+      }
+      return acc;
+    }, {});
+
+    // generate top 5 most expensive product
+    const top5MostExpensiveProduct = products
+      .sort((a, b) => b.price - a.price)
+      .slice(0, 5);
+
+    // generate top 5 most cheapest product
+    const top5MostCheapestProduct = products
+      .sort((a, b) => a.price - b.price)
+      .slice(0, 5);
+
+    // generate total stock
+    const totalStock = products.reduce((acc, product) => {
+      acc += product.stock;
+      return acc;
+    }, 0);
+
+    return successResponse(res, {
+      totalProductByStatus,
+      top5MostExpensiveProduct,
+      top5MostCheapestProduct,
+      totalStock,
+      totalProduct: products.length,
+    });
+  } else {
+    return errorResponse(res, 'Product not found', undefined, 404);
+  }
+};
+
 export default {
   allProducts,
   showProduct,
   storeProduct,
   updateProduct,
   deleteProduct,
+  summaryProduct,
 };

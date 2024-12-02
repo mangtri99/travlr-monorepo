@@ -8,6 +8,11 @@ import { useState } from 'react';
 import Input from '../../../components/input';
 import Button from '../../../components/button';
 import Badge from '../../../components/badge';
+import Dialog from '../../../components/dialog';
+import { useSession } from 'next-auth/react';
+import { FetchApi } from '../../../utils/api';
+import { toast } from 'sonner';
+import { PRODUCT_SERVICE } from '../../../config/url';
 
 export default function ProductList({
   products,
@@ -16,11 +21,26 @@ export default function ProductList({
   products: Product[];
   paginations: Paginations;
 }) {
+  const { data: session } = useSession();
+  const $http = FetchApi(session);
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [perPage, setPerPage] = useState(searchParams.get('perPage') || 10);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onDeleteProduct = (product: Product) => {
+    setSelectedProduct(product);
+    setOpenDialog(true);
+  };
+
+  const onCancelDialog = () => {
+    setSelectedProduct(null);
+    setOpenDialog(false);
+  };
 
   const handleChangePagination = (page: number) => {
     // push to current with query params
@@ -61,6 +81,33 @@ export default function ProductList({
     const newUrl = `${pathname}?${qs}`;
 
     router.push(newUrl);
+  };
+
+  const handleDelete = async () => {
+    if (!selectedProduct?.id) {
+      toast.error('Failed to delete data');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await $http(`${PRODUCT_SERVICE}/${selectedProduct.id}`, {
+        method: 'DELETE',
+      });
+      setIsLoading(false);
+      if (response) {
+        console.log(response.data);
+        toast.success('Product deleted successfully');
+        setOpenDialog(false);
+
+        // refresh data
+        router.refresh();
+      }
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+      toast.error('Failed to delete data');
+    }
   };
 
   return (
@@ -146,6 +193,7 @@ export default function ProductList({
                   <a
                     role="button"
                     className="ml-4 font-medium text-red-600 hover:underline"
+                    onClick={() => onDeleteProduct(product)}
                   >
                     Delete
                   </a>
@@ -155,6 +203,16 @@ export default function ProductList({
           </tbody>
         </table>
       </div>
+
+      <Dialog
+        title={`Are you sure to delete this product '${selectedProduct?.name}'?`}
+        isShowButtonTrigger={false}
+        open={openDialog}
+        onSubmit={() => {
+          handleDelete();
+        }}
+        onCancel={onCancelDialog}
+      />
 
       <Pagination
         totalPage={paginations.total}

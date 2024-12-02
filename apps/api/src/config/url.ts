@@ -14,4 +14,5 @@ export const AUTH_SERVICE_PATH = {
 export const PRODUCT_SERVICE_PATH = {
   index: '/',
   detail: '/:id',
+  summary: '/report/summary',
 };

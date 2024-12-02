@@ -24,7 +24,9 @@ export default function ProductForm({
 
   return (
     <div className="w-full p-4 bg-white border rounded-md shadow-sm">
-      <h1 className="mb-4 text-xl font-bold text-left">Product Create</h1>
+      <h1 className="mb-4 text-xl font-bold text-left">
+        Product {isEdit ? 'Update' : 'Create'}
+      </h1>
       <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-4">
         <div className="space-y-4">
           <div>
