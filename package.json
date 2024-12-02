@@ -2,7 +2,9 @@
   "name": "@travlr-monorepo/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start": "node dist/apps/api/main.js"
+  },
   "private": true,
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
