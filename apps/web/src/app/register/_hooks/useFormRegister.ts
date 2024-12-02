@@ -5,9 +5,12 @@ import { FetchApi } from '../../../utils/api';
 import { z } from 'zod';
 import { AUTH_SERVICE_REGISTER } from '../../../config/url';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 export const useFormRegister = () => {
   const $http = FetchApi();
+  const router = useRouter();
 
   const {
     formState: { errors },
@@ -37,12 +40,32 @@ export const useFormRegister = () => {
       });
 
       if (response) {
-        console.log(response.data);
+        // auto login after success register
+        const createLogin = {
+          email: values.email,
+          password: values.password,
+        };
+
+        setIsLoading(true);
+        const login = await fetch('/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(createLogin),
+        });
+
+        if (login.ok) {
+          setIsLoading(false);
+          router.push('/product');
+        }
+
         reset();
       }
       setIsLoading(false);
     } catch (error) {
       setIsLoading(true);
+      toast.error('An error occurred. Please try again.');
       console.error(error);
     }
   }
