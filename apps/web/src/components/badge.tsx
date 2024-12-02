@@ -1,4 +1,6 @@
-export default function Badge({ status }: { status: string }) {
+type Status = 'available' | 'pending' | 'sold';
+
+export default function Badge({ status }: { status: Status }) {
   const badgeColor = {
     available: 'bg-green-500',
     pending: 'bg-yellow-500',
