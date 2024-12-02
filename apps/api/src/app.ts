@@ -8,7 +8,7 @@ import bodyParser from 'body-parser';
 import { authMiddleware } from './middleware/authMiddleware';
 import { BASE_API_URL_AUTH, BASE_API_URL_PRODUCTS } from './config/url';
 
-export const app = express();
+const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -22,3 +22,5 @@ app.use(BASE_API_URL_AUTH, AuthRoutes);
 app.use(BASE_API_URL_PRODUCTS, [authMiddleware], ProductRoutes);
 
 app.use('/run/seeder', SeedRoutes);
+
+module.exports = app; // This is important for Vercel.

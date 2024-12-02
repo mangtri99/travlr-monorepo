@@ -1,9 +1,11 @@
 import request from 'supertest';
-import { app } from '../app';
+// import { app } from '../app';
 import { REDIS_PRODUCTS_KEY } from '../config/redis';
 import Redis from 'ioredis-mock';
 import { BASE_API_URL_PRODUCTS } from '../config/url';
 import { generateToken } from '../utils/jwt';
+
+const app = require('../app');
 
 jest.mock('ioredis', () => require('ioredis-mock'));
 

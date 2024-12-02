@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { app } from './app';
+const app = require('./app');
 
 const port = process.env.EXPRESS_PORT || 3333;
 const server = app.listen(port, () => {
