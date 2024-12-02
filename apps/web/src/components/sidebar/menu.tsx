@@ -1,8 +1,11 @@
 'use client';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { cn } from '../../utils/common';
 
 export default function Menu() {
+  const pathname = usePathname();
   const menu = [
     {
       title: 'Dashboard',
@@ -17,14 +20,19 @@ export default function Menu() {
   ];
 
   return (
-    <div>
+    <div className="space-y-2">
       {menu.map((item, index) => (
         <div
           key={index}
-          className="flex items-center px-4 py-3 text-gray-900 transition-all hover:underline hover:text-gray-950 hover:cursor-pointer"
+          className={cn(
+            'flex items-center px-3 py-2 rounded-sm text-gray-900 transition-all hover:bg-blue-100 hover:underline hover:text-gray-950 hover:cursor-pointer',
+            {
+              'bg-blue-100': pathname === item.link,
+            }
+          )}
         >
           <Icon icon={item.icon} className="text-lg" />
-          <Link href={item.link} className="ml-4 text-lg text-gray-900">
+          <Link href={item.link} className="w-full ml-4 text-lg text-gray-900">
             {item.title}
           </Link>
         </div>

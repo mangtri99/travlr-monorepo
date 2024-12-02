@@ -32,7 +32,7 @@ export default function Pagination({
             onClick={() => onChangePagination && onChangePagination(i)}
             className={`flex items-center justify-center h-8 px-3 leading-tight text-gray-500 bg-white border border-gray-300 ${
               i === currentPage
-                ? 'bg-gray-200 text-gray-700'
+                ? 'bg-gray-300 text-gray-700 '
                 : 'hover:bg-gray-100 hover:text-gray-700'
             }`}
           >

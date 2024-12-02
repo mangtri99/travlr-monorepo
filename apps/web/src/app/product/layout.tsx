@@ -24,7 +24,7 @@ export default function ProductLayout({
     <div className="flex">
       <div
         ref={sidebarRef}
-        className="fixed w-64 h-full transition-transform -translate-x-full bg-white border-r md:translate-x-0"
+        className="fixed z-10 w-64 h-full transition-transform -translate-x-full bg-white border-r md:translate-x-0"
       >
         <div
           className="flex flex-col transition-transform"

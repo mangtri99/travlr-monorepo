@@ -62,7 +62,7 @@ const showProduct = async (req: Request, res: Response) => {
 const storeProduct = async (req: Request, res: Response) => {
   // store product in cache
   try {
-    const { name, price, description } = req.body as z.infer<
+    const { name, price, description, status, stock } = req.body as z.infer<
       typeof productSchema
     >;
 
@@ -79,6 +79,8 @@ const storeProduct = async (req: Request, res: Response) => {
       name,
       price,
       description,
+      stock: stock || 0,
+      status: status || 'available',
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -94,7 +96,7 @@ const storeProduct = async (req: Request, res: Response) => {
 const updateProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { name, price, description } = req.body as z.infer<
+    const { name, price, description, stock, status } = req.body as z.infer<
       typeof productSchema
     >;
 
@@ -115,6 +117,8 @@ const updateProduct = async (req: Request, res: Response) => {
         name,
         price,
         description,
+        stock: stock || 0,
+        status: status || 'available',
         updatedAt: new Date(),
       };
 

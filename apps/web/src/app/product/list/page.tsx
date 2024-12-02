@@ -5,7 +5,7 @@ import { FetchApi } from '../../..//utils/api';
 import { PRODUCT_SERVICE } from '../../../config/url';
 import { APIResponse, Paginations, Product } from '../../../utils/types';
 
-export default async function Index() {
+export default async function Index({ searchParams }: any) {
   interface ResponseProduct {
     products: Product[];
     paginations: Paginations;
@@ -20,6 +20,7 @@ export default async function Index() {
 
   const response = await $http<APIResponse<ResponseProduct>>(PRODUCT_SERVICE, {
     method: 'GET',
+    params: searchParams,
   });
 
   if (response.data) {

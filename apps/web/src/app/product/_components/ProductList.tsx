@@ -1,7 +1,13 @@
 'use client';
 
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Pagination from '../../../components/pagination';
 import { Product, Paginations } from '../../../utils/types';
+import Link from 'next/link';
+import { useState } from 'react';
+import Input from '../../../components/input';
+import Button from '../../../components/button';
+import Badge from '../../../components/badge';
 
 export default function ProductList({
   products,
@@ -10,26 +16,106 @@ export default function ProductList({
   products: Product[];
   paginations: Paginations;
 }) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [search, setSearch] = useState(searchParams.get('search') || '');
+  const [perPage, setPerPage] = useState(searchParams.get('perPage') || 10);
+
+  const handleChangePagination = (page: number) => {
+    // push to current with query params
+    const searchParamsObject = Object.fromEntries(searchParams.entries());
+    const qs = new URLSearchParams({
+      ...searchParamsObject,
+      page: page.toString(),
+    }).toString();
+
+    const newUrl = `${pathname}?${qs}`;
+
+    router.push(newUrl);
+  };
+
+  const handleSearch = () => {
+    // push to current with query params
+    const searchParamsObject = Object.fromEntries(searchParams.entries());
+    const qs = new URLSearchParams({
+      ...searchParamsObject,
+      page: '1',
+      search,
+    }).toString();
+
+    const newUrl = `${pathname}?${qs}`;
+
+    router.push(newUrl);
+  };
+
+  const handleChangePerPage = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setPerPage(Number(e.target.value));
+    // push to current with query params
+    const searchParamsObject = Object.fromEntries(searchParams.entries());
+    const qs = new URLSearchParams({
+      ...searchParamsObject,
+      perPage: e.target.value,
+    }).toString();
+
+    const newUrl = `${pathname}?${qs}`;
+
+    router.push(newUrl);
+  };
+
   return (
     <div className="flex flex-col w-full">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center space-x-2">
+          <Input
+            id="search"
+            type="search"
+            className="w-48 py-1"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <Button type="button" onClick={handleSearch}>
+            Search
+          </Button>
+        </div>
+
+        <div>
+          <select
+            className="w-20 py-1 border border-gray-300 rounded-md form-select"
+            value={perPage}
+            onChange={handleChangePerPage}
+          >
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+          </select>
+        </div>
+      </div>
+
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left text-gray-500 ">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
             <tr>
-              <th scope="col" className="px-6 py-3">
-                No
+              <th scope="col" className="px-4 py-3">
+                ID
               </th>
-              <th scope="col" className="px-6 py-3 text-nowrap">
+              <th scope="col" className="px-4 py-3 text-nowrap">
                 Product Name
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 py-3">
                 Price
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 py-3">
+                Stock
+              </th>
+              <th scope="col" className="px-4 py-3">
+                Status
+              </th>
+              <th scope="col" className="px-4 py-3">
                 Description
               </th>
-              <th scope="col" className="px-6 py-3">
-                <span className="sr-only">Edit</span>
+              <th scope="col" className="px-4 py-3 text-right">
+                Action
               </th>
             </tr>
           </thead>
@@ -38,19 +124,30 @@ export default function ProductList({
               <tr className="bg-white border-b hover:bg-gray-50 " key={index}>
                 <th
                   scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap "
+                  className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap "
                 >
-                  {index + 1}
+                  {product.id}
                 </th>
-                <td className="px-6 py-4">{product.name}</td>
-                <td className="px-6 py-4">{product.price}</td>
-                <td className="px-6 py-4 truncate">{product.description}</td>
-                <td className="px-6 py-4 text-right">
-                  <a
-                    href="#"
+                <td className="px-4 py-3">{product.name}</td>
+                <td className="px-4 py-3">{product.price}</td>
+                <td className="px-4 py-3">{product.stock}</td>
+                <td className="px-4 py-3">
+                  <Badge status={product.status} />
+                </td>
+                <td className="px-4 py-3 truncate">{product.description}</td>
+                <td className="px-4 py-3 text-right">
+                  <Link
+                    href={`/product/${product.id}/edit`}
                     className="font-medium text-blue-600 hover:underline"
                   >
                     Edit
+                  </Link>
+
+                  <a
+                    role="button"
+                    className="ml-4 font-medium text-red-600 hover:underline"
+                  >
+                    Delete
                   </a>
                 </td>
               </tr>
@@ -59,13 +156,11 @@ export default function ProductList({
         </table>
       </div>
 
-      <div>{paginations.total}</div>
-
       <Pagination
         totalPage={paginations.total}
         currentPage={paginations.page}
         onChangePagination={(page) => {
-          console.log(page);
+          handleChangePagination(page);
         }}
       />
     </div>
