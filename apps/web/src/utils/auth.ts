@@ -4,9 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 
 // types imports
 import type { NextAuthConfig, Session, User } from 'next-auth';
-// import type { UserType, UserResponseType } from "@/types/user";
 import { AdapterUser } from 'next-auth/adapters';
-// import { CredentialsType, SocialCredentialsType } from "@/types/login";
 import { JWT } from 'next-auth/jwt';
 import axios from 'axios';
 
