@@ -198,7 +198,13 @@ const summaryProduct = async (req: Request, res: Response) => {
       totalProduct: products.length,
     });
   } else {
-    return errorResponse(res, 'Product not found', undefined, 404);
+    return successResponse(res, {
+      totalProductByStatus: {},
+      top5MostExpensiveProduct: [],
+      top5MostCheapestProduct: [],
+      totalStock: 0,
+      totalProduct: 0,
+    });
   }
 };
 

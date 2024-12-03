@@ -1,4 +1,3 @@
-import { SessionProvider } from 'next-auth/react';
 import { auth } from '../../../utils/auth';
 import ProductList from '../_components/ProductList';
 import { FetchApi } from '../../..//utils/api';
@@ -29,9 +28,9 @@ export default async function Index({ searchParams }: any) {
   }
 
   return (
-    <SessionProvider session={session}>
+    <div>
       <h1 className="mb-4 text-2xl font-bold">Product List</h1>
       <ProductList products={products} paginations={paginations} />
-    </SessionProvider>
+    </div>
   );
 }
