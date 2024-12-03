@@ -2,12 +2,11 @@ import { Request, Response } from 'express';
 import { errorResponse, successResponse } from '../utils/response';
 import { z } from 'zod';
 import { loginSchema, registerSchema } from '../schema/auth';
-import { REDIS_USER_KEY } from '../config/redis';
+import { REDIS_SERVICE_INIT, REDIS_USER_KEY } from '../config/redis';
 import bcryptjs from 'bcryptjs';
-import Redis from 'ioredis';
 import { generateToken } from '../utils/jwt';
 
-const redis = new Redis();
+const redis = REDIS_SERVICE_INIT;
 
 const login = async (req: Request, res: Response) => {
   try {
