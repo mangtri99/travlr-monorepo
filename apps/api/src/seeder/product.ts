@@ -1,8 +1,7 @@
-import Redis from 'ioredis';
-import { REDIS_PRODUCTS_KEY } from '../config/redis';
+import { REDIS_PRODUCTS_KEY, REDIS_SERVICE_INIT } from '../config/redis';
 import { PRODUCT_STATUS } from '../config/status';
 
-const redis = new Redis();
+const redis = REDIS_SERVICE_INIT;
 const productSeeder = async (count = 10, isReset = false) => {
   const getProductStatusRandom = () => {
     const status = Object.values(PRODUCT_STATUS);

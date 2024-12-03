@@ -1,11 +1,10 @@
 import { Request, Response } from 'express';
-import Redis from 'ioredis';
 import { z } from 'zod';
 import { productSchema } from '../schema/product';
 import { errorResponse, successResponse } from '../utils/response';
-import { REDIS_PRODUCTS_KEY } from '../config/redis';
+import { REDIS_PRODUCTS_KEY, REDIS_SERVICE_INIT } from '../config/redis';
 
-const redis = new Redis();
+const redis = REDIS_SERVICE_INIT;
 
 const allProducts = async (req: Request, res: Response) => {
   // get query params

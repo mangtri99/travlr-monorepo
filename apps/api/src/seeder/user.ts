@@ -1,8 +1,7 @@
-import Redis from 'ioredis';
 import bcryptjs from 'bcryptjs';
-import { REDIS_USER_KEY } from '../config/redis';
+import { REDIS_SERVICE_INIT, REDIS_USER_KEY } from '../config/redis';
 
-const redis = new Redis();
+const redis = REDIS_SERVICE_INIT;
 const userSeeder = async (count = 1) => {
   // generate users
   const users = [];
