@@ -17,7 +17,7 @@ import TableRoot from '../../../components/table';
 import Select from '../../../components/select';
 
 export default function ProductList({
-  products,
+  products = [],
   paginations,
 }: {
   products: Product[];
@@ -157,41 +157,49 @@ export default function ProductList({
             </TableRoot.Row>
           </TableRoot.Head>
           <TableRoot.Body>
-            {products.map((product, index) => (
-              <TableRoot.Row
-                className="bg-white border-b hover:bg-gray-50"
-                key={index}
-              >
-                <TableRoot.Cell className="font-medium text-gray-900">
-                  {product.id}
-                </TableRoot.Cell>
-                <TableRoot.Cell>{product.name}</TableRoot.Cell>
-                <TableRoot.Cell>{product.price}</TableRoot.Cell>
-                <TableRoot.Cell>{product.stock}</TableRoot.Cell>
-                <TableRoot.Cell>
-                  <Badge status={product.status} />
-                </TableRoot.Cell>
-                <TableRoot.Cell className="truncate">
-                  {product.description}
-                </TableRoot.Cell>
-                <TableRoot.Cell className="text-right">
-                  <Link
-                    href={`/product/${product.id}/edit`}
-                    className="font-medium text-blue-600 hover:underline"
-                  >
-                    Edit
-                  </Link>
+            {products.length > 0 ? (
+              products.map((product, index) => (
+                <TableRoot.Row
+                  className="bg-white border-b hover:bg-gray-50"
+                  key={index}
+                >
+                  <TableRoot.Cell className="font-medium text-gray-900">
+                    {product.id}
+                  </TableRoot.Cell>
+                  <TableRoot.Cell>{product.name}</TableRoot.Cell>
+                  <TableRoot.Cell>{product.price}</TableRoot.Cell>
+                  <TableRoot.Cell>{product.stock}</TableRoot.Cell>
+                  <TableRoot.Cell>
+                    <Badge status={product.status} />
+                  </TableRoot.Cell>
+                  <TableRoot.Cell className="truncate">
+                    {product.description}
+                  </TableRoot.Cell>
+                  <TableRoot.Cell className="text-right">
+                    <Link
+                      href={`/product/${product.id}/edit`}
+                      className="font-medium text-blue-600 hover:underline"
+                    >
+                      Edit
+                    </Link>
 
-                  <a
-                    role="button"
-                    className="ml-4 font-medium text-red-600 hover:underline"
-                    onClick={() => onDeleteProduct(product)}
-                  >
-                    Delete
-                  </a>
+                    <a
+                      role="button"
+                      className="ml-4 font-medium text-red-600 hover:underline"
+                      onClick={() => onDeleteProduct(product)}
+                    >
+                      Delete
+                    </a>
+                  </TableRoot.Cell>
+                </TableRoot.Row>
+              ))
+            ) : (
+              <TableRoot.Row>
+                <TableRoot.Cell colSpan={7} className="text-center">
+                  No data found
                 </TableRoot.Cell>
               </TableRoot.Row>
-            ))}
+            )}
           </TableRoot.Body>
         </TableRoot>
       </div>
@@ -206,14 +214,16 @@ export default function ProductList({
         onCancel={onCancelDialog}
       />
 
-      <Pagination
-        totalPage={paginations.total}
-        currentPage={paginations.page}
-        perPage={paginations.perPage}
-        onChangePagination={(page) => {
-          handleChangePagination(page);
-        }}
-      />
+      {paginations?.total > 0 && (
+        <Pagination
+          totalPage={paginations.total}
+          currentPage={paginations.page}
+          perPage={paginations.perPage}
+          onChangePagination={(page) => {
+            handleChangePagination(page);
+          }}
+        />
+      )}
     </div>
   );
 }

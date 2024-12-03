@@ -4,7 +4,7 @@ const TableRoot = ({
   children,
   className,
   ...props
-}: React.HTMLAttributes<HTMLTableElement>) => {
+}: React.TableHTMLAttributes<HTMLTableElement>) => {
   return (
     <table
       className={cn('w-full text-sm text-left text-gray-500', className)}
@@ -19,7 +19,7 @@ const TableHead = ({
   children,
   className,
   ...props
-}: React.HTMLAttributes<HTMLTableSectionElement>) => {
+}: React.TableHTMLAttributes<HTMLTableSectionElement>) => {
   return (
     <thead
       className={cn('text-xs text-gray-700 uppercase bg-gray-50 ', className)}
@@ -34,7 +34,7 @@ const TableHeader = ({
   children,
   className,
   ...props
-}: React.HTMLAttributes<HTMLTableCellElement>) => {
+}: React.TableHTMLAttributes<HTMLTableCellElement>) => {
   return (
     <th className={cn('px-4 py-3 text-nowrap', className)} {...props}>
       {children}
@@ -46,7 +46,7 @@ const TableBody = ({
   children,
   className,
   ...props
-}: React.HTMLAttributes<HTMLTableSectionElement>) => {
+}: React.TableHTMLAttributes<HTMLTableSectionElement>) => {
   return (
     <tbody className={cn(className)} {...props}>
       {children}
@@ -58,7 +58,7 @@ const TableRow = ({
   children,
   className,
   ...props
-}: React.HTMLAttributes<HTMLTableRowElement>) => {
+}: React.TableHTMLAttributes<HTMLTableRowElement>) => {
   return (
     <tr
       className={cn('bg-white border-b hover:bg-gray-50', className)}
@@ -72,10 +72,11 @@ const TableRow = ({
 const TableCell = ({
   children,
   className,
+  colSpan = 1,
   ...props
-}: React.HTMLAttributes<HTMLTableCellElement>) => {
+}: React.TableHTMLAttributes<HTMLTableCellElement> & { colSpan?: number }) => {
   return (
-    <td className={cn('px-4 py-3', className)} {...props}>
+    <td colSpan={colSpan} className={cn('px-4 py-3', className)} {...props}>
       {children}
     </td>
   );
