@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { Icon } from '@iconify/react';
 import Button from '../../components/button';
 import Menu from '../../components/sidebar/menu';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { Toaster } from 'sonner';
 
 export default function ProductLayout({
@@ -11,6 +11,7 @@ export default function ProductLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const { data: session } = useSession();
   const sidebarRef = useRef<HTMLDivElement>(null);
   const sidebarContentRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -52,16 +53,17 @@ export default function ProductLayout({
         ref={contentRef}
         className="flex flex-col flex-1 w-full h-full ml-0 transition-transform md:ml-64"
       >
-        <div className="flex items-center justify-between w-full px-3 py-4 bg-white border-b">
+        <div className="flex items-center justify-between w-full px-4 py-4 bg-white border-b">
           <div className="flex items-center">
             <button type="button" onClick={toggleSidebar} className="md:hidden">
               <Icon icon="mdi:format-list-bulleted" className="text-2xl" />
             </button>
 
-            <div>Dashboard</div>
+            <div>Admin Panel</div>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center space-x-2">
+            <div>Account {session?.user?.name}</div>
             <Button
               type="button"
               onClick={() => {
