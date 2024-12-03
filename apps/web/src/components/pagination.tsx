@@ -13,26 +13,19 @@ export default function Pagination({
 
   const createPagination = () => {
     const pages = [];
-    let start = 1;
-    let end = totalPage;
 
-    if (totalPage > MAX_PAGINATION) {
-      if (currentPage > MAX_PAGINATION - 1) {
-        start = currentPage - 2;
-        end = currentPage + 2;
-        if (end > totalPage) {
-          end = totalPage;
-          start = end - MAX_PAGINATION + 1;
-        }
-      } else {
-        start = 1;
-        end = MAX_PAGINATION;
+    const totalPages = Math.ceil(totalPage / perPage);
+    const half = Math.floor(MAX_PAGINATION / 2);
+
+    let start = Math.max(1, currentPage - half);
+    let end = Math.min(totalPages, currentPage + half);
+
+    if (end - start + 1 < MAX_PAGINATION) {
+      if (currentPage <= half) {
+        end = Math.min(totalPages, start + MAX_PAGINATION - 1);
+      } else if (totalPages - currentPage < half) {
+        start = Math.max(1, totalPages - MAX_PAGINATION + 1);
       }
-    }
-
-    if (end >= Math.ceil(totalPage / perPage)) {
-      start = Math.ceil(totalPage / perPage) - MAX_PAGINATION + 1;
-      end = Math.ceil(totalPage / perPage);
     }
 
     for (let i = start; i <= end; i++) {

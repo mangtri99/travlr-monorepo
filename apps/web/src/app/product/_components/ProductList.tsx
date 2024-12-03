@@ -13,6 +13,8 @@ import { useSession } from 'next-auth/react';
 import { FetchApi } from '../../../utils/api';
 import { toast } from 'sonner';
 import { PRODUCT_SERVICE } from '../../../config/url';
+import TableRoot from '../../../components/table';
+import Select from '../../../components/select';
 
 export default function ProductList({
   products,
@@ -31,6 +33,11 @@ export default function ProductList({
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const perPageOptions = [
+    { value: '10', label: '10' },
+    { value: '20', label: '20' },
+    { value: '30', label: '30' },
+  ];
 
   const onDeleteProduct = (product: Product) => {
     setSelectedProduct(product);
@@ -127,62 +134,47 @@ export default function ProductList({
         </div>
 
         <div>
-          <select
-            className="w-20 py-1 border border-gray-300 rounded-md form-select"
+          <Select
+            options={perPageOptions}
             value={perPage}
             onChange={handleChangePerPage}
-          >
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-          </select>
+            className="w-20"
+          />
         </div>
       </div>
 
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left text-gray-500 ">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
-            <tr>
-              <th scope="col" className="px-4 py-3">
-                ID
-              </th>
-              <th scope="col" className="px-4 py-3 text-nowrap">
-                Product Name
-              </th>
-              <th scope="col" className="px-4 py-3">
-                Price
-              </th>
-              <th scope="col" className="px-4 py-3">
-                Stock
-              </th>
-              <th scope="col" className="px-4 py-3">
-                Status
-              </th>
-              <th scope="col" className="px-4 py-3">
-                Description
-              </th>
-              <th scope="col" className="px-4 py-3 text-right">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+        <TableRoot>
+          <TableRoot.Head>
+            <TableRoot.Row>
+              <TableRoot.Header>ID</TableRoot.Header>
+              <TableRoot.Header>Product Name</TableRoot.Header>
+              <TableRoot.Header>Price</TableRoot.Header>
+              <TableRoot.Header>Stock</TableRoot.Header>
+              <TableRoot.Header>Status</TableRoot.Header>
+              <TableRoot.Header>Description</TableRoot.Header>
+              <TableRoot.Header className="text-right">Action</TableRoot.Header>
+            </TableRoot.Row>
+          </TableRoot.Head>
+          <TableRoot.Body>
             {products.map((product, index) => (
-              <tr className="bg-white border-b hover:bg-gray-50 " key={index}>
-                <th
-                  scope="row"
-                  className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap "
-                >
+              <TableRoot.Row
+                className="bg-white border-b hover:bg-gray-50"
+                key={index}
+              >
+                <TableRoot.Cell className="font-medium text-gray-900">
                   {product.id}
-                </th>
-                <td className="px-4 py-3">{product.name}</td>
-                <td className="px-4 py-3">{product.price}</td>
-                <td className="px-4 py-3">{product.stock}</td>
-                <td className="px-4 py-3">
+                </TableRoot.Cell>
+                <TableRoot.Cell>{product.name}</TableRoot.Cell>
+                <TableRoot.Cell>{product.price}</TableRoot.Cell>
+                <TableRoot.Cell>{product.stock}</TableRoot.Cell>
+                <TableRoot.Cell>
                   <Badge status={product.status} />
-                </td>
-                <td className="px-4 py-3 truncate">{product.description}</td>
-                <td className="px-4 py-3 text-right">
+                </TableRoot.Cell>
+                <TableRoot.Cell className="truncate">
+                  {product.description}
+                </TableRoot.Cell>
+                <TableRoot.Cell className="text-right">
                   <Link
                     href={`/product/${product.id}/edit`}
                     className="font-medium text-blue-600 hover:underline"
@@ -197,11 +189,11 @@ export default function ProductList({
                   >
                     Delete
                   </a>
-                </td>
-              </tr>
+                </TableRoot.Cell>
+              </TableRoot.Row>
             ))}
-          </tbody>
-        </table>
+          </TableRoot.Body>
+        </TableRoot>
       </div>
 
       <Dialog

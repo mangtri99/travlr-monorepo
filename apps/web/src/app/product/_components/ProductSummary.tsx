@@ -1,6 +1,6 @@
 'use client';
 
-import { Product } from '../../../utils/types';
+import { APIResponse, ProductReportSummary } from '../../../utils/types';
 import React from 'react';
 import {
   PieChart,
@@ -17,21 +17,9 @@ import {
   Bar,
 } from 'recharts';
 
-interface ProductSummaryProps {
-  totalProductByStatus: {
-    [key: string]: number;
-  };
-  top5MostExpensiveProduct: Product[];
-  top5MostCheapestProduct: Product[];
-  totalStock: number;
-  totalProduct: number;
-}
-
 export default function ProductSummary({
   data,
-}: {
-  data?: ProductSummaryProps;
-}) {
+}: APIResponse<ProductReportSummary>) {
   const dataTop5MostExpensiveProduct =
     data?.top5MostExpensiveProduct?.map((product) => ({
       name: product.name,
@@ -52,33 +40,6 @@ export default function ProductSummary({
     : [];
 
   const COLORS = ['#FFBB28', '#00C49F', '#ea2020'];
-
-  // const RADIAN = Math.PI / 180;
-  // const renderCustomizedLabel = ({
-  //   cx,
-  //   cy,
-  //   midAngle,
-  //   innerRadius,
-  //   outerRadius,
-  //   percent,
-  //   index,
-  // }) => {
-  //   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  //   const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  //   const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  //   return (
-  //     <text
-  //       x={x}
-  //       y={y}
-  //       fill="white"
-  //       textAnchor={x > cx ? 'start' : 'end'}
-  //       dominantBaseline="central"
-  //     >
-  //       {`${(percent * 100).toFixed(0)}%`}
-  //     </text>
-  //   );
-  // };
 
   return (
     <div className="w-full space-y-4">
