@@ -1,15 +1,16 @@
 {
   "version": 2,
+  "buildCommand": "npx nx build api --prod",
   "builds": [
     {
-      "src": "apps/api/app.ts",
+      "src": "apps/api/src/app.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "apps/api/app.ts"
+      "dest": "apps/api/src/app.ts"
     }
   ]
 }
