@@ -217,6 +217,7 @@ export default function ProductList({
       <Pagination
         totalPage={paginations.total}
         currentPage={paginations.page}
+        perPage={paginations.perPage}
         onChangePagination={(page) => {
           handleChangePagination(page);
         }}
