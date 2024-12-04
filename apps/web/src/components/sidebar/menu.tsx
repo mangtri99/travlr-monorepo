@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '../../utils/common';
 
-export default function Menu() {
+export default function Menu({ onChangeMenu }: { onChangeMenu: () => void }) {
   const pathname = usePathname();
   const menu = [
     {
@@ -32,7 +32,11 @@ export default function Menu() {
           )}
         >
           <Icon icon={item.icon} className="text-lg" />
-          <Link href={item.link} className="w-full ml-4 text-lg text-gray-900">
+          <Link
+            href={item.link}
+            className="w-full ml-4 text-lg text-gray-900"
+            onClick={onChangeMenu}
+          >
             {item.title}
           </Link>
         </div>

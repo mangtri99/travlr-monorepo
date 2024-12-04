@@ -168,7 +168,13 @@ export default function ProductList({
                     {product.id}
                   </TableRoot.Cell>
                   <TableRoot.Cell>{product.name}</TableRoot.Cell>
-                  <TableRoot.Cell>{product.price}</TableRoot.Cell>
+                  <TableRoot.Cell>
+                    {product.price.toLocaleString('id-ID', {
+                      style: 'currency',
+                      currency: 'IDR',
+                      maximumFractionDigits: 0,
+                    })}
+                  </TableRoot.Cell>
                   <TableRoot.Cell>{product.stock}</TableRoot.Cell>
                   <TableRoot.Cell>
                     <Badge status={product.status} />
@@ -212,6 +218,7 @@ export default function ProductList({
         onSubmit={() => {
           handleDelete();
         }}
+        isLoadingSubmit={isLoading}
         onCancel={onCancelDialog}
       />
 

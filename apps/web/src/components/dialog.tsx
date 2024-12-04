@@ -6,6 +6,7 @@ export default function Dialog({
   onSubmit,
   onCancel,
   description = '',
+  isLoadingSubmit = false,
   isShowButtonTrigger = true,
   buttonTriggerText = 'Action',
 }: {
@@ -14,6 +15,7 @@ export default function Dialog({
   onCancel?: () => void;
   open?: boolean;
   description?: string;
+  isLoadingSubmit?: boolean;
   isShowButtonTrigger?: boolean;
   buttonTriggerText?: string;
 }) {
@@ -51,6 +53,8 @@ export default function Dialog({
               <Button
                 type="button"
                 onClick={onSubmit}
+                disabled={isLoadingSubmit}
+                loading={isLoadingSubmit}
                 className="text-white bg-red-700 hover:bg-red-800 focus:bg-red-800 focus:ring-red-900"
               >
                 Submit
