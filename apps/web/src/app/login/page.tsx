@@ -29,7 +29,6 @@ export default function SignIn() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof loginSchema>) {
-    console.log(values);
     setIsLoading(true);
     try {
       const response = await fetch('/api/login', {
@@ -40,15 +39,14 @@ export default function SignIn() {
         body: JSON.stringify(values),
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        setIsLoading(false);
-        router.push('/product');
-      }
-    } catch (error) {
       setIsLoading(false);
-      console.error(error);
+      if (response.ok) {
+        router.push('/product');
+      } else {
+        toast.error('Invalid credentials');
+      }
+    } catch {
+      setIsLoading(false);
       toast.error('An error occurred. Please try again.');
     }
   }

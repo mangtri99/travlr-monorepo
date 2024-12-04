@@ -63,7 +63,7 @@ export default function ProductLayout({
           </div>
 
           <div className="flex items-center space-x-2">
-            <div>Account {session?.user?.name}</div>
+            <div>Hi, {session?.user?.name}</div>
             <Button
               type="button"
               onClick={() => {
