@@ -31,7 +31,9 @@ export default function ProductForm({
       <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-4">
         <div className="space-y-4">
           <div>
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name" required>
+              Name
+            </Label>
             <Input
               id="name"
               type="text"
@@ -42,7 +44,9 @@ export default function ProductForm({
           </div>
 
           <div>
-            <Label htmlFor="price">Price</Label>
+            <Label htmlFor="price" required>
+              Price
+            </Label>
             <Input
               id="price"
               type="number"
@@ -64,7 +68,9 @@ export default function ProductForm({
           </div>
 
           <div>
-            <Label htmlFor="stock">Stock</Label>
+            <Label htmlFor="stock" required>
+              Stock
+            </Label>
             <Input
               id="stock"
               type="number"
@@ -75,7 +81,9 @@ export default function ProductForm({
           </div>
 
           <div>
-            <Label htmlFor="status">Status</Label>
+            <Label htmlFor="status" required>
+              Status
+            </Label>
 
             <Select
               id="status"
@@ -89,7 +97,7 @@ export default function ProductForm({
           </div>
 
           <div className="flex items-center justify-end space-x-4">
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isLoading} loading={isLoading}>
               Save
             </Button>
           </div>

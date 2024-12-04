@@ -76,6 +76,7 @@ export const useFormRegister = () => {
 
   return {
     errors,
+    isLoading,
     handleSubmit,
     register,
     onSubmit,

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Button from '../../../components/button';
 
 export default function FormGroup() {
-  const { errors, handleSubmit, register, onSubmit, onError } =
+  const { errors, isLoading, handleSubmit, register, onSubmit, onError } =
     useFormRegister();
 
   return (
@@ -68,7 +68,9 @@ export default function FormGroup() {
                 Login here
               </Link>
             </div>
-            <Button type="submit">Register</Button>
+            <Button type="submit" disabled={isLoading} loading={isLoading}>
+              Register
+            </Button>
           </div>
         </div>
       </form>
