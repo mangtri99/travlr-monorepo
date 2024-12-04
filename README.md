@@ -1,28 +1,56 @@
-# TravlrMonorepo
+# Travlr Technical Test
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+You can access live application here https://travlr-monorepo.vercel.app/product
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/next?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+## Tech Stack
+- NX Monorepo
+- Express JS
+- Next JS
+- TypeScript
+- Redis
+- Next Auth + JWT
+- TailwindCSS
+- Jest
+- Zod 
 
-## Finish your remote caching setup
+## Setup Application
+After clone, please run
+```sh
+npm install
+cp .env.example .env
+```
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/8HacTiqV5j)
-
-
-## Run tasks
+## Run Application
 
 To run the dev server for your app, use:
 
+### Frontend Next JS
 ```sh
 npx nx dev web
 ```
 
+### Backend Express JS
+```sh
+npx nx serve api
+```
+
 To create a production bundle:
 
+### Frontend Next JS
 ```sh
 npx nx build web
+```
+
+### Backend Express JS
+```sh
+npx nx build api
+```
+
+### Run Test
+```sh
+npm run test
 ```
 
 To see all available targets to run for a project, run:
@@ -30,6 +58,13 @@ To see all available targets to run for a project, run:
 ```sh
 npx nx show project web
 ```
+
+```sh
+npx nx show project api
+```
+
+
+[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/next?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
 
 These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
 
