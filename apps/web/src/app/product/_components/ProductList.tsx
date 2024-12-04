@@ -82,6 +82,7 @@ export default function ProductList({
     const searchParamsObject = Object.fromEntries(searchParams.entries());
     const qs = new URLSearchParams({
       ...searchParamsObject,
+      page: '1',
       perPage: e.target.value,
     }).toString();
 
