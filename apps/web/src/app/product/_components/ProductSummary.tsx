@@ -1,6 +1,7 @@
 'use client';
 
-import { Product } from '../../../utils/types';
+import { Icon } from '@iconify/react';
+import { APIResponse, ProductReportSummary } from '../../../utils/types';
 import React from 'react';
 import {
   PieChart,
@@ -17,21 +18,16 @@ import {
   Bar,
 } from 'recharts';
 
-interface ProductSummaryProps {
-  totalProductByStatus: {
-    [key: string]: number;
-  };
-  top5MostExpensiveProduct: Product[];
-  top5MostCheapestProduct: Product[];
-  totalStock: number;
-  totalProduct: number;
-}
+const NoDataAvailable = () => (
+  <div className="flex flex-col items-center justify-center">
+    <Icon icon="mdi:close-circle" className="text-3xl text-gray-900" />
+    <p className="text-base text-center">No data available</p>
+  </div>
+);
 
 export default function ProductSummary({
   data,
-}: {
-  data?: ProductSummaryProps;
-}) {
+}: APIResponse<ProductReportSummary>) {
   const dataTop5MostExpensiveProduct =
     data?.top5MostExpensiveProduct?.map((product) => ({
       name: product.name,
@@ -53,33 +49,6 @@ export default function ProductSummary({
 
   const COLORS = ['#FFBB28', '#00C49F', '#ea2020'];
 
-  // const RADIAN = Math.PI / 180;
-  // const renderCustomizedLabel = ({
-  //   cx,
-  //   cy,
-  //   midAngle,
-  //   innerRadius,
-  //   outerRadius,
-  //   percent,
-  //   index,
-  // }) => {
-  //   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  //   const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  //   const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  //   return (
-  //     <text
-  //       x={x}
-  //       y={y}
-  //       fill="white"
-  //       textAnchor={x > cx ? 'start' : 'end'}
-  //       dominantBaseline="central"
-  //     >
-  //       {`${(percent * 100).toFixed(0)}%`}
-  //     </text>
-  //   );
-  // };
-
   return (
     <div className="w-full space-y-4">
       <div className="grid w-full grid-cols-1 md:grid-cols-4 md:gap-x-4">
@@ -95,72 +64,85 @@ export default function ProductSummary({
       </div>
       <div className="grid w-full grid-cols-1 gap-y-4">
         <div className="p-4 bg-white border rounded-sm shadow-sm">
-          <p className="mb-5 text-2xl font-medium text-center">
+          <p className="mb-5 text-xl font-medium text-center">
             Total Stock By Status
           </p>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart width={350} height={300}>
-              <Pie
-                data={dataTotalProductByStatus}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label
-                // label={renderCustomizedLabel}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {dataTotalProductByStatus.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+          {dataTotalProductByStatus.length > 0 ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart width={350} height={300}>
+                <Pie
+                  data={dataTotalProductByStatus}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label
+                  // label={renderCustomizedLabel}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {dataTotalProductByStatus.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          ) : (
+            <NoDataAvailable />
+          )}
         </div>
 
         <div className="p-4 bg-white border rounded-sm shadow-sm">
-          <p className="mb-5 text-2xl font-medium text-center">
+          <p className="mb-5 text-xl font-medium text-center">
             Top Expensive Product
           </p>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart
-              width={730}
-              height={250}
-              data={dataTop5MostExpensiveProduct}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="price" fill="#8884d8" />
-            </BarChart>
-          </ResponsiveContainer>
+
+          {dataTop5MostExpensiveProduct.length > 0 ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart
+                width={730}
+                height={250}
+                data={dataTop5MostExpensiveProduct}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="price" fill="#8884d8" />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <NoDataAvailable />
+          )}
         </div>
 
         <div className="p-4 bg-white border rounded-sm shadow-sm">
-          <p className="mb-5 text-2xl font-medium text-center">
+          <p className="mb-5 text-xl font-medium text-center">
             Top Cheapest Product
           </p>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart
-              width={730}
-              height={250}
-              data={dataTop5MostCheapestProduct}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="price" fill="#8884d8" />
-            </BarChart>
-          </ResponsiveContainer>
+          {dataTop5MostCheapestProduct.length > 0 ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart
+                width={730}
+                height={250}
+                data={dataTop5MostCheapestProduct}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="price" fill="#8884d8" />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <NoDataAvailable />
+          )}
         </div>
       </div>
     </div>

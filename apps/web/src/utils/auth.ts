@@ -9,15 +9,15 @@ import { JWT } from 'next-auth/jwt';
 import axios from 'axios';
 
 // declare module "next-auth" {
-//   interface User extends UserType {}
+//   interface User {}
 // }
 
 // declare module "next-auth/adapters" {
-//   interface AdapterUser extends UserType {}
+//   interface AdapterUser {}
 // }
 
 // declare module "next-auth/jwt" {
-//   interface JWT extends UserType {}
+//   interface JWT {}
 // }
 
 const authOptions = {

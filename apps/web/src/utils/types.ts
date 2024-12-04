@@ -18,3 +18,13 @@ export interface Product {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export interface ProductReportSummary {
+  totalProductByStatus: {
+    [key: string]: number;
+  };
+  top5MostExpensiveProduct: Product[];
+  top5MostCheapestProduct: Product[];
+  totalStock: number;
+  totalProduct: number;
+}

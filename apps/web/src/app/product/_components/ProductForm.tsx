@@ -4,6 +4,7 @@ import Input from '../../../components/input';
 import Button from '../../../components/button';
 import { useFormProduct } from '../_hooks/useFormProduct';
 import { FormProductType } from '../../../schema/productSchema';
+import Select from '../../../components/select';
 
 export default function ProductForm({
   defaultValues,
@@ -63,7 +64,7 @@ export default function ProductForm({
           </div>
 
           <div>
-            <Label htmlFor="confirmPassword">Stock</Label>
+            <Label htmlFor="stock">Stock</Label>
             <Input
               id="stock"
               type="number"
@@ -74,17 +75,17 @@ export default function ProductForm({
           </div>
 
           <div>
-            <Label htmlFor="confirmPassword">Status</Label>
-            <select
-              className="w-32 py-1 border border-gray-300 rounded-md form-select"
+            <Label htmlFor="status">Status</Label>
+
+            <Select
+              id="status"
+              options={productStatuses.map((status) => ({
+                value: status.value,
+                label: status.label,
+              }))}
+              className="w-32"
               {...register('status')}
-            >
-              {productStatuses.map((status) => (
-                <option key={status.value} value={status.value}>
-                  {status.label}
-                </option>
-              ))}
-            </select>
+            />
           </div>
 
           <div className="flex items-center justify-end space-x-4">

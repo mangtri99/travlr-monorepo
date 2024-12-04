@@ -5,7 +5,7 @@ import userSeeder from '../seeder/user';
 const productSeed = async (req: Request, res: Response) => {
   const { count, isReset } = req.query;
 
-  await productSeeder(Number(count), Boolean(isReset));
+  await productSeeder(Number(count), isReset === 'true');
 
   return res.json({ message: 'Product seeded' });
 };

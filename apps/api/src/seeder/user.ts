@@ -5,12 +5,21 @@ const redis = REDIS_SERVICE_INIT;
 const userSeeder = async (count = 1) => {
   // generate users
   const users = [];
+
+  const cachedUsers = (await redis.get(REDIS_USER_KEY)) || '[]';
+  const getUsers = JSON.parse(cachedUsers);
+
+  let latestUserId = 0;
+  if (getUsers.length > 0) {
+    latestUserId = Number(getUsers[getUsers.length - 1].id);
+  }
+
   for (let i = 0; i < count; i++) {
     const hashedPassword = await bcryptjs.hash('password', 10);
     const user = {
-      id: i + 1,
-      name: `User ${i + 1}`,
-      email: `user${i + 1}@gmail.com`,
+      id: latestUserId + i + 1,
+      name: `User ${latestUserId + i + 1}`,
+      email: `user${latestUserId + i + 1}@gmail.com`,
       password: hashedPassword,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -19,12 +28,10 @@ const userSeeder = async (count = 1) => {
     users.push(user);
   }
 
-  const cachedUsers = await redis.get(REDIS_USER_KEY);
-  if (!cachedUsers) {
+  if (getUsers.length === 0) {
     await redis.set(REDIS_USER_KEY, JSON.stringify(users));
   } else {
-    const parsedUsers = JSON.parse(cachedUsers);
-    const newUsers = [...parsedUsers, ...users];
+    const newUsers = [...getUsers, ...users];
     await redis.set(REDIS_USER_KEY, JSON.stringify(newUsers));
   }
 

@@ -2,11 +2,17 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { auth } from './utils/auth';
 
-// This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   const session = await auth();
   if (!session) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    if (
+      request.nextUrl.pathname.startsWith('/login') ||
+      request.nextUrl.pathname.startsWith('/register')
+    ) {
+      return NextResponse.next();
+    } else {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
   } else {
     if (
       request.nextUrl.pathname.startsWith('/login') ||
@@ -19,5 +25,5 @@ export async function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ['/product/:path*'],
+  matcher: ['/product/:path*', '/login', '/register'],
 };
