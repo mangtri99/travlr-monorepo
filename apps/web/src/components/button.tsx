@@ -1,10 +1,11 @@
 import React from 'react';
 import { cn } from '../utils/common';
+import { Icon } from '@iconify/react';
 
 const Button = React.forwardRef<
   HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement>
->(({ children, className, ...props }, ref) => {
+  React.ButtonHTMLAttributes<HTMLButtonElement> & { loading?: boolean }
+>(({ children, className, loading, ...props }, ref) => {
   return (
     <button
       type="button"
@@ -15,7 +16,12 @@ const Button = React.forwardRef<
       ref={ref}
       {...props}
     >
-      {children}
+      <div className="flex items-center gap-x-1">
+        {loading && (
+          <Icon icon="mdi:loading" className="block text-sm animate-spin" />
+        )}
+        {children}
+      </div>
     </button>
   );
 });

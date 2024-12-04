@@ -3,6 +3,8 @@ import ProductList from '../_components/ProductList';
 import { FetchApi } from '../../..//utils/api';
 import { PRODUCT_SERVICE } from '../../../config/url';
 import { APIResponse, Paginations, Product } from '../../../utils/types';
+import Link from 'next/link';
+import Button from '../../../components/button';
 
 export default async function Index({ searchParams }: any) {
   interface ResponseProduct {
@@ -29,7 +31,14 @@ export default async function Index({ searchParams }: any) {
 
   return (
     <div>
-      <h1 className="mb-4 text-2xl font-bold">Product List</h1>
+      <div className="flex items-center justify-between mb-4 ">
+        <h1 className="text-2xl font-bold">Product List</h1>
+        <Link href="/product/create">
+          <Button type="button" className="px-2 py-1">
+            Add Product
+          </Button>
+        </Link>
+      </div>
       <ProductList products={products} paginations={paginations} />
     </div>
   );

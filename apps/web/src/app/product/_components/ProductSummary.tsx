@@ -51,13 +51,13 @@ export default function ProductSummary({
 
   return (
     <div className="w-full space-y-4">
-      <div className="grid w-full grid-cols-1 md:grid-cols-4 md:gap-x-4">
-        <div className="p-4 bg-white border rounded-sm shadow-sm">
+      <div className="flex w-full space-x-4 overflow-auto">
+        <div className="w-1/2 p-4 bg-white border rounded-sm shadow-sm md:w-1/4">
           <p className="text-lg font-medium text-gray-900">Total Stock</p>
           <p className="text-gray-800">{data?.totalStock}</p>
         </div>
 
-        <div className="p-4 bg-white border rounded-sm shadow-sm">
+        <div className="w-1/2 p-4 bg-white border rounded-sm shadow-sm md:w-1/4">
           <p className="text-lg font-medium text-gray-900">Total Product</p>
           <p className="text-gray-800">{data?.totalProduct}</p>
         </div>

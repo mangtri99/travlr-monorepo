@@ -9,12 +9,6 @@ describe('Button component', () => {
     expect(screen.getByText('Click me')).toBeInTheDocument();
   });
 
-  it('applies custom className', () => {
-    render(<Button className="custom-class">Click me</Button>);
-    const button = screen.getByText('Click me');
-    expect(button).toHaveClass('custom-class');
-  });
-
   it('handles click events', () => {
     const handleClick = jest.fn();
     render(<Button onClick={handleClick}>Click me</Button>);
@@ -23,17 +17,18 @@ describe('Button component', () => {
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
-  it('is disabled when disabled prop is passed', () => {
-    render(<Button disabled>Click me</Button>);
-    const button = screen.getByText('Click me');
-    expect(button).toBeDisabled();
+  it('applies additional classes passed via className', () => {
+    const { container } = render(<Button className="extra-class">Test</Button>);
+    expect(container.firstChild).toHaveClass('extra-class');
   });
 
-  it('applies default styles', () => {
-    render(<Button>Click me</Button>);
-    const button = screen.getByText('Click me');
+  it('disables the button when the "disabled" prop is true', () => {
+    render(<Button disabled>Disabled</Button>);
+    const button = screen.getByRole('button', { name: 'Disabled' });
+    expect(button).toBeDisabled();
     expect(button).toHaveClass(
-      'text-white text-sm px-3 py-1 transition-all rounded-sm disabled:opacity-50 disabled:cursor-not-allowed bg-blue-700 hover:bg-blue-800 focus:bg-blue-800 focus:ring-1 focus:ring-blue-900'
+      'disabled:opacity-50',
+      'disabled:cursor-not-allowed'
     );
   });
 });

@@ -94,7 +94,7 @@ export default function SignIn() {
                   Register here
                 </Link>
               </div>
-              <Button type="submit" disabled={isLoading}>
+              <Button type="submit" disabled={isLoading} loading={isLoading}>
                 Login
               </Button>
             </div>
