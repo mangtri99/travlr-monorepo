@@ -1,6 +1,6 @@
+import { SessionProvider } from 'next-auth/react';
 import ProductForm from '../_components/ProductForm';
 import { auth } from '../../../utils/auth';
-import { SessionProvider } from 'next-auth/react';
 
 export default async function Index() {
   const session = await auth();
