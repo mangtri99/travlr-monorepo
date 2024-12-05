@@ -3,6 +3,7 @@ import ProductForm from '../../_components/ProductForm';
 import { APIResponse, Product } from '../../../../utils/types';
 import { FetchApi } from '../../../../utils/api';
 import { PRODUCT_SERVICE } from '../../../../config/url';
+import { SessionProvider } from 'next-auth/react';
 
 export default async function Index({ params }: any) {
   const session = await auth();
@@ -17,8 +18,10 @@ export default async function Index({ params }: any) {
   );
 
   return (
-    <div className="flex flex-col">
-      <ProductForm defaultValues={response.data.data} isEdit />
-    </div>
+    <SessionProvider session={session}>
+      <div className="flex flex-col">
+        <ProductForm defaultValues={response.data.data} isEdit />
+      </div>
+    </SessionProvider>
   );
 }

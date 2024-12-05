@@ -5,6 +5,7 @@ import { PRODUCT_SERVICE } from '../../../config/url';
 import { APIResponse, Paginations, Product } from '../../../utils/types';
 import Link from 'next/link';
 import Button from '../../../components/button';
+import { SessionProvider } from 'next-auth/react';
 
 export default async function Index({ searchParams }: any) {
   interface ResponseProduct {
@@ -30,7 +31,7 @@ export default async function Index({ searchParams }: any) {
   }
 
   return (
-    <div>
+    <SessionProvider session={session}>
       <div className="flex items-center justify-between mb-4 ">
         <h1 className="text-2xl font-bold">Product List</h1>
         <Link href="/product/create">
@@ -40,6 +41,6 @@ export default async function Index({ searchParams }: any) {
         </Link>
       </div>
       <ProductList products={products} paginations={paginations} />
-    </div>
+    </SessionProvider>
   );
 }
